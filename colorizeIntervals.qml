@@ -22,9 +22,10 @@
 // consecutive fifths and octaves.
 
 // Screenshots
+//
 // - UI: https://raw.githubusercontent.com/bitflipp/musescore/master/colorizeIntervals.ui.png
-// - Result of using the plugin on https://musescore.com/user/31664190/scores/5672016, bars 216-218,
-//   7 semitones, highlight color #ff0000: https://raw.githubusercontent.com/bitflipp/musescore/master/colorizeIntervals.example.png
+// - Result of using the plugin on https://musescore.com/user/31664190/scores/5672016, bars 216-218, 7 semitones,
+//   highlight color #ff0000: https://raw.githubusercontent.com/bitflipp/musescore/master/colorizeIntervals.example.png
 
 import MuseScore 3.0
 import QtQuick 2.0
