@@ -28,7 +28,7 @@ MuseScore {
     property var highlightColors: ["#000000", "#9999ff", "#4d4dff", "#0000cc"]
     property var defaultNoteColor: "#000000"
     property var selectedNotes
-    property var showSettings: true
+    property var showSettings: false
 
     function getSelectedNotes() {
         var cursor = curScore.newCursor();
@@ -85,8 +85,10 @@ MuseScore {
     function processSelectedNotes() {
         curScore.startCmd();
         for (var i = 0; i < selectedNotes.length; i++) {
+            selectedNotes[i].note.color = defaultNoteColor;
+        }
+        for (var i = 0; i < selectedNotes.length; i++) {
             var note1 = selectedNotes[i];
-            note1.note.color = defaultNoteColor;
             for (var j = i + 1; j < selectedNotes.length; j++) {
                 var note2 = selectedNotes[j];
                 var notesOverlap = note1.startTick < note2.endTick && note2.startTick < note1.endTick;
