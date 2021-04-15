@@ -1,5 +1,4 @@
 // SPDX-License-Identifier: MIT
-
 // Copyright (c) 2021 Philipp Naumann
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software
 // and associated documentation files (the "Software"), to deal in the Software without restriction,
@@ -13,7 +12,6 @@
 // NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 // SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-
 // Description
 // This plugin colorizes intervals across all staves and voices. One of its use cases is finding
 // consecutive fifths and octaves.
@@ -27,8 +25,10 @@ import QtQuick.Window 2.2
 
 MuseScore {
     property var semitones: 7
-    property var highlightColors: ["#000000", "#9999ff", "#4d4dff", "#0000cc", "#0000b3", "#000066"]
+    property var highlightColors: ["#000000", "#9999ff", "#4d4dff", "#0000cc"]
+    property var defaultNoteColor: "#000000"
     property var selectedNotes
+    property var showSettings: true
 
     function getSelectedNotes() {
         var cursor = curScore.newCursor();
@@ -45,7 +45,6 @@ MuseScore {
             endStaffIdx = curScore.nstaves;
             endTick = cursor.tick || curScore.lastSegment.tick + 1;
         }
-
         var selectedNotes = [];
         for (var staffIdx = startStaffIdx; staffIdx <= endStaffIdx; staffIdx++) {
             for (var voice = 0; voice < 4; voice++) {
@@ -63,7 +62,7 @@ MuseScore {
                         var note = {
                             "startTick": cursor.tick,
                             "note": notes[i],
-                            "endTick": cursor.tick + chord.duration.ticks - 40
+                            "endTick": cursor.tick + chord.actualDuration.ticks
                         };
                         selectedNotes.push(note);
                     }
@@ -76,9 +75,9 @@ MuseScore {
 
     function nextHighlightColor(color) {
         for (var i = 0; i < highlightColors.length - 1; i++) {
-            if (highlightColors[i] == color) {
+            if (highlightColors[i] == color)
                 return highlightColors[i + 1];
-            }
+
         }
         return color;
     }
@@ -87,16 +86,17 @@ MuseScore {
         curScore.startCmd();
         for (var i = 0; i < selectedNotes.length; i++) {
             var note1 = selectedNotes[i];
+            note1.note.color = defaultNoteColor;
             for (var j = i + 1; j < selectedNotes.length; j++) {
                 var note2 = selectedNotes[j];
                 var notesOverlap = note1.startTick < note2.endTick && note2.startTick < note1.endTick;
-                if (!notesOverlap) {
+                if (!notesOverlap)
                     continue;
-                }
+
                 var currentSemitones = Math.abs(note1.note.pitch - note2.note.pitch) % 12;
-                if (currentSemitones !== semitones) {
+                if (currentSemitones !== semitones)
                     continue;
-                }
+
                 note1.note.color = nextHighlightColor(note1.note.color);
                 note2.note.color = nextHighlightColor(note2.note.color);
             }
@@ -113,19 +113,26 @@ MuseScore {
             messageDialog.text = "Please select at least 2 notes.";
             messageDialog.icon = StandardIcon.Critical;
             messageDialog.visible = true;
-            return;
+            return ;
         }
-        window.visible = true;
+        if (showSettings) {
+            window.visible = true;
+        } else {
+            processSelectedNotes();
+            Qt.quit();
+        }
     }
 
     MessageDialog {
         id: messageDialog
+
         title: "Colorize Intervals"
         onAccepted: Qt.quit()
     }
 
     Window {
         id: window
+
         width: 400
         height: 100
         title: "Colorize Intervals"
@@ -158,6 +165,7 @@ MuseScore {
 
                 Text {
                     id: textSemitones
+
                     text: semitones
                 }
 
@@ -173,6 +181,9 @@ MuseScore {
                     Qt.quit();
                 }
             }
+
         }
+
     }
+
 }
