@@ -28,7 +28,7 @@ MuseScore {
     property var highlightColors: ["#000000", "#9999ff", "#4d4dff", "#0000cc"]
     property var defaultNoteColor: "#000000"
     property var selectedNotes
-    property var showSettings: false
+    property var showSettings: true
 
     function getSelectedNotes() {
         var cursor = curScore.newCursor();
