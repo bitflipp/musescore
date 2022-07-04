@@ -70,15 +70,17 @@ MuseScore {
                 }
             }
         }
+
         return selectedNotes;
     }
 
     function nextHighlightColor(color) {
         for (var i = 0; i < highlightColors.length - 1; i++) {
-            if (highlightColors[i] === color)
+            if (highlightColors[i] == color)
                 return highlightColors[i + 1];
 
         }
+
         return color;
     }
 
@@ -170,7 +172,6 @@ MuseScore {
 
                     text: semitones
                 }
-
             }
 
             Button {
@@ -183,9 +184,6 @@ MuseScore {
                     Qt.quit();
                 }
             }
-
         }
-
     }
-
 }
