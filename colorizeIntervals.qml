@@ -25,8 +25,8 @@ import QtQuick.Window 2.2
 
 MuseScore {
     property var semitones: 7
-    property var highlightColors: ["#000000", "#9999ff", "#4d4dff", "#0000cc"]
     property var defaultNoteColor: "#000000"
+    property var highlightColors: [defaultNoteColor, "#2cba00", "#a3ff00", "#fff400", "#ffa700", "#ff0000"]
     property var selectedNotes
     property var showSettings: true
 
@@ -81,7 +81,7 @@ MuseScore {
 
         }
 
-        return color;
+        return highlightColors[highlightColors.length - 1];
     }
 
     function processSelectedNotes() {
