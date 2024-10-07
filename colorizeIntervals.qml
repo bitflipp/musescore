@@ -41,9 +41,8 @@ MuseScore {
     }
 
     property var semitones: 7
-    property var defaultNoteColor: "#000000"
-    property var highlightColors: [defaultNoteColor, "#bfbfff", "#a3a3ff", "#7879ff", "#4949ff", "#1f1fff", "#0000ff"]
     property var selectedNotes
+    property var noteColors: ["#ff0000", "#00ff00", "#0000ff", "#ffff00", "#00ffff", "#ff00ff"]
 
     function getSelectedNotes() {
         var cursor = curScore.newCursor()
@@ -75,9 +74,10 @@ MuseScore {
                     var notes = chord.notes
                     for (var i = 0; i < notes.length; i++) {
                         var note = {
-                            "startTick": cursor.tick,
-                            "note": notes[i],
-                            "endTick": cursor.tick + chord.actualDuration.ticks
+                            startTick: cursor.tick,
+                            note: notes[i],
+                            endTick: cursor.tick + chord.actualDuration.ticks,
+                            colored: false
                         }
                         selectedNotes.push(note)
                     }
@@ -85,24 +85,30 @@ MuseScore {
                 }
             }
         }
+        selectedNotes.sort(function(note1, note2) {
+            if (note1.startTick < note2.startTick) {
+                return -1;
+            }
+            if (note2.startTick < note1.startTick) {
+                return 1;
+            }
+            return 0;
+        })
         return selectedNotes
     }
 
-    function nextHighlightColor(color) {
-        for (var i = 0; i < highlightColors.length - 1; i++) {
-            if (highlightColors[i] == color)
-                return highlightColors[i + 1]
-        }
-        return highlightColors[highlightColors.length - 1]
+    function getNoteColor() {
+        noteColors.push(noteColors.shift());
+        return noteColors[0];
     }
 
     function processSelectedNotes() {
         curScore.startCmd()
         for (var i = 0; i < selectedNotes.length; i++) {
-            selectedNotes[i].note.color = defaultNoteColor
-        }
-        for (var i = 0; i < selectedNotes.length; i++) {
             var note1 = selectedNotes[i]
+            if (note1.colored) {
+                continue
+            }
             for (var j = i + 1; j < selectedNotes.length; j++) {
                 var note2 = selectedNotes[j]
                 var notesOverlap = note1.startTick < note2.endTick && note2.startTick < note1.endTick
@@ -113,8 +119,17 @@ MuseScore {
                 if (currentSemitones !== semitones) {
                     continue
                 }
-                note1.note.color = nextHighlightColor(note1.note.color)
-                note2.note.color = nextHighlightColor(note2.note.color)
+                if (note2.colored) {
+                    note1.note.color = note2.note.color
+                } else {
+                    if (!note1.colored) {
+                        var noteColor = getNoteColor()
+                        note1.note.color = noteColor
+                    }
+                    note2.note.color = note1.note.color
+                    note2.colored = true
+                }
+                note1.colored = true
             }
         }
         curScore.endCmd()
