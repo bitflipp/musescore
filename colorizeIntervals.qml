@@ -30,18 +30,10 @@ MuseScore {
     title: "Colorize intervals"
     categoryCode: "composing-arranging-tools"
     onRun: {
-        selectedNotes = getSelectedNotes()
-        if (selectedNotes.length < 2) {
-            messageDialog.text = "Please select at least 2 notes."
-            messageDialog.icon = StandardIcon.Critical
-            messageDialog.visible = true
-            return
-        }
         window.visible = true
     }
 
     property var semitones: 7
-    property var selectedNotes
     property var noteColors: ["#ff0000", "#00ff00", "#0000ff", "#ffff00", "#00ffff", "#ff00ff"]
 
     function getSelectedNotes() {
@@ -97,13 +89,9 @@ MuseScore {
         return selectedNotes
     }
 
-    function getNoteColor() {
-        noteColors.push(noteColors.shift());
-        return noteColors[0];
-    }
-
     function processSelectedNotes() {
         curScore.startCmd()
+        var selectedNotes = getSelectedNotes()
         for (var i = 0; i < selectedNotes.length; i++) {
             var note1 = selectedNotes[i]
             if (note1.colored) {
@@ -123,7 +111,8 @@ MuseScore {
                     note1.note.color = note2.note.color
                 } else {
                     if (!note1.colored) {
-                        var noteColor = getNoteColor()
+                        noteColors.push(noteColors.shift());
+                        var noteColor = noteColors[0];
                         note1.note.color = noteColor
                     }
                     note2.note.color = note1.note.color
@@ -135,16 +124,10 @@ MuseScore {
         curScore.endCmd()
     }
 
-    MessageDialog {
-        id: messageDialog
-        title: "Colorize Intervals"
-        onAccepted: Qt.quit()
-    }
-
     Window {
         id: window
         width: 400
-        height: 75
+        height: 85
         title: "Colorize Intervals"
         onClosing: Qt.quit()
 
@@ -153,6 +136,7 @@ MuseScore {
             anchors.fill: parent
             anchors.leftMargin: 10
             anchors.rightMargin: 10
+            anchors.topMargin: 10
             anchors.bottomMargin: 10
 
             RowLayout {
