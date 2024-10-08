@@ -99,12 +99,13 @@ MuseScore {
             }
             for (var j = i + 1; j < selectedNotes.length; j++) {
                 var note2 = selectedNotes[j]
-                var notesOverlap = note1.startTick < note2.endTick && note2.startTick < note1.endTick
-                if (!notesOverlap) {
+                if (note2.startTick > note1.endTick) {
+                    break
+                }
+                if (!(note1.startTick < note2.endTick && note2.startTick < note1.endTick)) {
                     continue
                 }
-                var currentSemitones = Math.abs(note1.note.pitch - note2.note.pitch) % 12
-                if (currentSemitones !== semitones) {
+                if (Math.abs(note1.note.pitch - note2.note.pitch) % 12 !== semitones) {
                     continue
                 }
                 if (note2.colored) {
