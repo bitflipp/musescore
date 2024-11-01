@@ -32,10 +32,10 @@ MuseScore {
     onRun: {
         window.visible = true
     }
-
+    
     property var semitones: 7
     property var noteColors: ["#E6194B", "#3CB44B", "#FFE119", "#4363D8", "#F58231", "#911EB4", "#42D4F4", "#F032E6", "#BFEF45", "#FABED4", "#469990", "#DCBEFF", "#9A6324", "#FFFAC8", "#800000", "#AAFFC3", "#808000", "#FFD8B1", "#000075", "#A9A9A9"]
-
+    
     function getSelectedNotes() {
         var cursor = curScore.newCursor()
         cursor.rewind(Cursor.SELECTION_START)
@@ -79,16 +79,16 @@ MuseScore {
         }
         selectedNotes.sort(function(note1, note2) {
             if (note1.startTick < note2.startTick) {
-                return -1;
+                return -1
             }
             if (note2.startTick < note1.startTick) {
-                return 1;
+                return 1
             }
-            return 0;
+            return 0
         })
         return selectedNotes
     }
-
+    
     function processSelectedNotes() {
         curScore.startCmd()
         var selectedNotes = getSelectedNotes()
@@ -109,8 +109,8 @@ MuseScore {
                     note1.note.color = note2.note.color
                 } else {
                     if (!note1.colored) {
-                        noteColors.push(noteColors.shift());
-                        var noteColor = noteColors[0];
+                        noteColors.push(noteColors.shift())
+                        var noteColor = noteColors[0]
                         note1.note.color = noteColor
                     }
                     note2.note.color = note1.note.color
@@ -121,14 +121,14 @@ MuseScore {
         }
         curScore.endCmd()
     }
-
+    
     Window {
         id: window
         width: 400
         height: 85
         title: "Colorize Intervals"
         onClosing: Qt.quit()
-
+        
         ColumnLayout {
             spacing: 15
             anchors.fill: parent
@@ -136,12 +136,12 @@ MuseScore {
             anchors.rightMargin: 10
             anchors.topMargin: 10
             anchors.bottomMargin: 10
-
+            
             RowLayout {
                 Text {
                     text: "Semitones (modulo 12):"
                 }
-
+                
                 Slider {
                     from: 0
                     value: 7
@@ -154,13 +154,13 @@ MuseScore {
                         semitones = value
                     }
                 }
-
+                
                 Text {
                     id: textSemitones
                     text: semitones
                 }
             }
-
+            
             Button {
                 text: "OK"
                 Layout.fillWidth: true
