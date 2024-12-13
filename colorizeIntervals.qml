@@ -77,15 +77,7 @@ MuseScore {
                 }
             }
         }
-        selectedNotes.sort(function(note1, note2) {
-            if (note1.startTick < note2.startTick) {
-                return -1
-            }
-            if (note2.startTick < note1.startTick) {
-                return 1
-            }
-            return 0
-        })
+        selectedNotes.sort((note1, note2) => Math.sign(note2.startTick - note1.startTick))
         return selectedNotes
     }
     
