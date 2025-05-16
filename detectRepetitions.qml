@@ -1,6 +1,6 @@
 /*
 SPDX-License-Identifier: MIT
-Copyright (c) 2024 Philipp Naumann
+Copyright (c) 2025 Philipp Naumann
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software
 and associated documentation files (the "Software"), to deal in the Software without restriction,
@@ -19,10 +19,6 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 import MuseScore 3.0
 import QtQuick
-import QtQuick.Controls
-import QtQuick.Dialogs
-import QtQuick.Layouts
-import QtQuick.Window
 
 MuseScore {
     version: "1.0.0"
