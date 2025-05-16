@@ -119,7 +119,7 @@ MuseScore {
         width: 400
         height: 85
         title: "Colorize Intervals"
-        onClosing: Qt.quit()
+        onClosing: quit()
         
         ColumnLayout {
             spacing: 15
@@ -160,7 +160,7 @@ MuseScore {
                 onClicked: {
                     processSelectedNotes()
                     window.visible = false
-                    Qt.quit()
+                    quit()
                 }
             }
         }
