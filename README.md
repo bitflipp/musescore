@@ -1,6 +1,6 @@
 # MuseScore plugins
 
-## Colorize Intervals
+## Colorize intervals
 
 This plugin colorizes intervals (semitones modulo 12, sounding, twelve-tone equal temperament) across all staves and voices. One of its use cases is finding consecutive fifths and octaves.
 
