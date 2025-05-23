@@ -10,6 +10,6 @@ _Result of using the plugin on an unpublished piece of mine, 7 semitones_
 ![](img/colorizeIntervals0.png)
 _Same bars, 0 semitones_
 
-# Detect repetitions
+## Detect repetitions
 
 This plugin detects repetitions of sounding notes across all staves and voices.
